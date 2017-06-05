@@ -104,19 +104,23 @@ fg_color() {
   	magenta) echo 35;;
   	cyan)    echo 36;;
   	white)   echo 37;;
+    default) echo 39;;
+    light_blue) echo 94;;
     esac
 }
 
 bg_color() {
     case "$1" in
-	black)   echo 40;;
-	red)     echo 41;;
-   	green)   echo 42;;
-  	yellow)  echo 43;;
-  	blue)    echo 44;;
-  	magenta) echo 45;;
-  	cyan)    echo 46;;
-  	white)   echo 47;;
+    black)   echo 40;;
+    red)     echo 41;;
+    green)   echo 42;;
+    yellow)  echo 43;;
+    blue)    echo 44;;
+    magenta) echo 45;;
+    cyan)    echo 46;;
+    white)   echo 47;;
+    default) echo 49;;
+    light_blue) echo 104;;
     esac;
 }
 
@@ -215,7 +219,7 @@ prompt_context() {
 # prints history followed by HH:MM, useful for remembering what
 # we did previously
 prompt_histdt() {
-  prompt_segment black default "\! [\@]"
+  prompt_segment default default "\! [\@]"
 }
 
 
@@ -256,7 +260,7 @@ prompt_status() {
     [[ $UID -eq 0 ]] && symbols+="$(ansi_single $(fg_color yellow))⚡"
     [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="$(ansi_single $(fg_color cyan))⚙"
 
-    [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+    [[ -n "$symbols" ]] && prompt_segment light_blue default "$symbols"
 }
 
 ######################################################################
@@ -377,9 +381,9 @@ prompt_emacsdir() {
 ## Main prompt
 
 build_prompt() {
-    [[ ! -z ${AG_EMACS_DIR+x} ]] && prompt_emacsdir
-    prompt_status
-    [[ -z ${AG_NO_HIST+x} ]] && prompt_histdt
+    # [[ ! -z ${AG_EMACS_DIR+x} ]] && prompt_emacsdir
+    # prompt_status
+    [[ -z ${AG_NO_HIST+x} ]] #&& prompt_histdt
     [[ -z ${AG_NO_CONTEXT+x} ]] && prompt_context
     prompt_dir
     prompt_git
@@ -400,7 +404,7 @@ set_bash_prompt() {
     build_prompt
 
     # uncomment below to use right prompt
-    #     PS1='\[$(tput sc; printf "%*s" $COLUMNS "$PRIGHT"; tput rc)\]'$PR
+        # PS1='\[$(tput sc; printf "%*s" $COLUMNS "$PRIGHT"; tput rc)\]'$PR
     PS1=$PR
 }
 
